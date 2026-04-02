@@ -15,7 +15,7 @@ app.use(express.json())
 app.get('/', function(req, res){
     res.json({
         success: true,
-        message: 'Backend is running well'
+        message: 'Backend is running good'
     })
 })
 
