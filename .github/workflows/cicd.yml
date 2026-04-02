@@ -1,0 +1,22 @@
+name: CI/CD
+run-name: Rerun services on server
+on:
+  workflow_run:
+    workflows: ["Build image and push to registry"]
+    types:
+      - completed
+jobs:
+  Build-and-Push-Image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Execute remote SSH commands using password
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd server
+            docker compose pull backend
+            docker compose up backend -d
